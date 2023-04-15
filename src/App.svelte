@@ -1,63 +1,70 @@
 <script>
-	import AddPersonForm from './AddPersonForm.svelte';
-	import Modal from './Modal.svelte'
-
-	let showModal = false;
-	const toggleModal = () => {
-		showModal = !showModal;
+	import CreatePollFrom from "./components/CreatePollForm.svelte";
+  import Footer from "./components/Footer.svelte";
+	import Header from "./components/Header.svelte"; 
+	import PollList from "./components/PollList.svelte";
+	import Tabs from "./shared/Tabs.svelte";
+  
+	//tabs
+	let items = ['Current Polls', 'Add New Poll'];
+	let activeItem = 'Current Polls';
+	const tabChange = (e) => {
+	  activeItem = e.detail;
 	}
-	let people = [
-		{name: 'yoshi', beltcolor:'black', age:25, id: 1},
-		{name: 'mario', beltcolor: 'orange', age:25, id: 2},
-		{name: 'luigi', beltcolor: 'black', age:25, id: 3},
-        {name: 'peach', beltcolor: 'green', age:25, id: 4},
-        {name: 'bowser', beltcolor: 'blue', age:25, id: 5},
-	]
-
-	const handleDelete = (id) => {
-		// delete tthe person from people
-		people= people.filter((person) => person.id != id)
+  
+	// polls
+	let polls = [
+	  {
+		id: 1,
+		question: 'Python or JavaScript?',
+		answerA: 'Python',
+		answerB: 'JavaScript',
+		votesA: 9,
+		votesB: 15,
+	  },
+	];
+  
+	const handleAdd = (e) => {
+	  let poll = e.detail;
+	  polls = [poll, ...polls];
+	  console.log(polls);
+	  activeItem='Current Polls';
 	}
-
-	
-</script>
-<Modal {showModal} on:click={toggleModal}>
-	<AddPersonForm />
-</Modal>
-<main>
-	<button on:click|once ={toggleModal}>Open Modal</button>
-	{#each people as p (p.id)}
-		<div>
-			<h4>{p.name}</h4>
-			{#if p.beltcolor === 'black'}
-				<p><strong>Master Ninja</strong></p>
-			{/if}
-			<p>{p.age} years old, {p.beltcolor} belt</p>
-			<button on:click={() => handleDelete(p.id)}>delete</button>
-		</div>
-	{:else}
-		<p>There are no people to show</p>	
-	{/each}
-</main>
-
-<style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
+  
+	const handleVote = (e) => {
+	  const {id, option} = e.detail;
+	  let copiedPolls = [...polls];
+	  let upvotedPoll = copiedPolls.find((poll) => poll.id == id);
+  
+	  if(option ==='a'){
+		  upvotedPoll.votesA++;
+	  }
+	  if(option ==='b'){
+		  upvotedPoll.votesB++;
+	  }
+	  polls=copiedPolls;
 	}
-
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
-</style>
+  
+  
+  </script>
+  
+  <Header />
+  
+  <main>
+	  <Tabs {items} {activeItem} on:tabChange = {tabChange} />
+  
+	  {#if activeItem === 'Current Polls'}
+		  <PollList {polls} on:vote={handleVote} />
+	  {:else if activeItem === 'Add New Poll'}
+		  <CreatePollFrom on:add={handleAdd} />
+	  {/if}
+  </main>
+  
+  <Footer/>
+  
+  <style>
+	  main{
+		  max-width: 960px;
+		  margin: 40px auto;
+	  }
+  </style>
