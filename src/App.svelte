@@ -2,7 +2,7 @@
 	let people = [
 		{name: 'yoshi', beltcolor:'black', age:25, id: 1},
 		{name: 'mario', beltcolor: 'orange', age:25, id: 2},
-		{name: 'luigi', beltcolor: 'yellow', age:25, id: 3},
+		{name: 'luigi', beltcolor: 'black', age:25, id: 3},
         {name: 'peach', beltcolor: 'green', age:25, id: 4},
         {name: 'bowser', beltcolor: 'blue', age:25, id: 5},
 	]
@@ -11,12 +11,24 @@
 		// delete tthe person from people
 		people= people.filter((person) => person.id != id)
 	}
+	let num = 1;
 </script>
+
+{#if num > 20}
+	<p>Greater than 20</p>
+{:else if num > 5}
+	<p>Greater than 5</p>	
+{:else}
+	<p>not greater than five</p>	
+{/if}
 
 <main>
 	{#each people as p (p.id)}
 		<div>
 			<h4>{p.name}</h4>
+			{#if p.beltcolor === 'black'}
+				<p><strong>Master Ninja</strong></p>
+			{/if}
 			<p>{p.age} years old, {p.beltcolor} belt</p>
 			<button on:click={() => handleDelete(p.id)}>delete</button>
 		</div>
