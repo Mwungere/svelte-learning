@@ -14,7 +14,7 @@
 	}
 	let num = 1;
 </script>
-<Modal />
+<Modal message="Hey, I am a prop value" isPromo={true}/>
 <main>
 	{#each people as p (p.id)}
 		<div>
