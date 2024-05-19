@@ -6,6 +6,11 @@
         {name: 'peach', beltcolor: 'green', age:25, id: 4},
         {name: 'bowser', beltcolor: 'blue', age:25, id: 5},
 	]
+
+	const handleDelete = (id) => {
+		// delete tthe person from people
+		people= people.filter((person) => person.id != id)
+	}
 </script>
 
 <main>
@@ -13,6 +18,7 @@
 		<div>
 			<h4>{p.name}</h4>
 			<p>{p.age} years old, {p.beltcolor} belt</p>
+			<button on:click={() => handleDelete(p.id)}>delete</button>
 		</div>
 	{:else}
 		<p>There are no people to show</p>	
