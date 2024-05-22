@@ -1,4 +1,5 @@
 <script>
+	import AddPersonForm from './AddPersonForm.svelte';
 	import Modal from './Modal.svelte'
 
 	let showModal = false;
@@ -20,9 +21,11 @@
 
 	
 </script>
-<Modal message="Hey, I am a prop value" isPromo={true} {showModal} on:click={toggleModal}/>
+<Modal {showModal} on:click={toggleModal}>
+	<AddPersonForm />
+</Modal>
 <main>
-	<button on:click={toggleModal}>Open Modal</button>
+	<button on:click|once ={toggleModal}>Open Modal</button>
 	{#each people as p (p.id)}
 		<div>
 			<h4>{p.name}</h4>
